@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.min.js"
+      integrity="sha512-xzC4RSo+4m1clLhr0pQr6yFjO9bJ0py6+l65SBibI8/pSEU8U4iVZ7xm95WRq8PXw2MKv8SSR3QkqR2jciG5Ug=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.js"
+      integrity="sha512-alPPV0FSr6mYlSRf3QgbZmEqL7o99K5e30hGX+FrqDwMhnTngIeshurUAuKFDG28IzPSCSWTwmEfN0wBjg19KQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <title>Chap-App</title>
+  </head>
+  <body>
+    <h1>Welcome to my chat app</h1>
+    <form onsubmit="sendMsg(); return false">
+      <input class="msg" type="text" />
+      <button type="submit">Send Msg</button>
+    </form>
+    <h2 id="result"></h2>
+
+    <script>
+        const socket = io(`http://localhost:8080/`);
+        socket.on("connection");
+
+        socket.on("msgs", (data) => {
+          console.log(data);
+          data.map((item, index) => {
+            document.querySelector("#result").innerHTML += item.text + "<br>";
+          });
+        });
+
+        socket.on("msg", (data) => {
+          // console.log(data);
+          document.querySelector("#result").innerHTML += data + "<br>";
+        });
+
+        let sendMsg = () => {
+          let msg = document.querySelector(".msg");
+          socket.emit("msg", msg.value);
+          msg.value = "";
+        };
+    </script>
+  </body>
+</html>
