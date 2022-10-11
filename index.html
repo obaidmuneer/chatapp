@@ -20,33 +20,22 @@
   </head>
   <body>
     <h1>Welcome to my chat app</h1>
-    <form onsubmit="sendMsg(); return false">
-      <input class="msg" type="text" />
-      <button type="submit">Send Msg</button>
-    </form>
-    <h2 id="result"></h2>
+    <div class="nameContainer">
+      <form class="nameForm" onsubmit="getName(); return false">
+        <span>Enter Your Name : </span><input class="name" type="text" />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <div class="msgContainer">
+      <form class="msgForm" onsubmit="sendMsg(); return false">
+        <span>Enter Your Msg : </span> <input class="msg" type="text" />
+        <button type="submit">Send Msg</button>
+      </form>
+      <button onclick="dlt()">Delete Chat</button>
 
-    <script>
-        const socket = io(`https://panicky-suspenders-fish.cyclic.app/`);
-        socket.on("connection");
+      <div id="result"></div>
+    </div>
 
-        socket.on("msgs", (data) => {
-          console.log(data);
-          data.map((item, index) => {
-            document.querySelector("#result").innerHTML += item.text + "<br>";
-          });
-        });
-
-        socket.on("msg", (data) => {
-          // console.log(data);
-          document.querySelector("#result").innerHTML += data + "<br>";
-        });
-
-        let sendMsg = () => {
-          let msg = document.querySelector(".msg");
-          socket.emit("msg", msg.value);
-          msg.value = "";
-        };
-    </script>
+    <script src="./app.js"></script>
   </body>
 </html>
